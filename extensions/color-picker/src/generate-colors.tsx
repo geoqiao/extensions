@@ -20,7 +20,7 @@ Examples:
 Prompt: ${props.arguments.prompt}
 JSON colors:`,
     {
-      model: AI.Model.OpenAI_GPT4o,
+      model: AI.Model["OpenAI_GPT-5_mini"],
       stream: false,
     },
   );

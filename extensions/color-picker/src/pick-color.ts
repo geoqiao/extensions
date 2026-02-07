@@ -11,7 +11,7 @@ export default async function command(props: PickColorCommandLaunchProps) {
   await closeMainWindow();
 
   try {
-    let pickColor: () => Promise<Color | undefined>;
+    let pickColor: () => Promise<Color | undefined | null>;
     if (isMac) {
       const { pickColor: importedPickColor } = await import("swift:../swift/color-picker");
       pickColor = importedPickColor;
@@ -20,7 +20,7 @@ export default async function command(props: PickColorCommandLaunchProps) {
       pickColor = importedPickColor;
     }
 
-    const pickedColor = (await pickColor()) as Color | undefined;
+    const pickedColor = (await pickColor()) as Color | undefined | null;
     if (!pickedColor) {
       return;
     }
@@ -55,11 +55,13 @@ export default async function command(props: PickColorCommandLaunchProps) {
       }
     }
 
-    try {
-      await launchCommand({ name: "menu-bar", type: LaunchType.Background });
-    } catch (e) {
-      if (!(e instanceof Error && e.message.includes("must be activated"))) {
-        await showFailureToast(e);
+    if (isMac) {
+      try {
+        await launchCommand({ name: "menu-bar", type: LaunchType.Background });
+      } catch (e) {
+        if (!(e instanceof Error && e.message.includes("must be activated"))) {
+          await showFailureToast(e);
+        }
       }
     }
 

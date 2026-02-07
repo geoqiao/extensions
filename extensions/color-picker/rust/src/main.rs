@@ -210,6 +210,13 @@ fn pick_color() -> std::result::Result<Option<Color>, String> {
         SNAP_OLD = SelectObject(SNAP_DC, SNAP_BMP.into());
         ReleaseDC(None, hscreen_dc);
 
+        // Get initial cursor position to center loupe
+        let mut pt = POINT::default();
+        let _ = GetCursorPos(&mut pt);
+        let half = WINDOW_SIZE / 2;
+        let initial_x = pt.x - half;
+        let initial_y = pt.y - half;
+
         // Register a layered window class for the loupe
         let class_name = w!("RaycastColorPickerLoupe");
         let hinstance: HINSTANCE = GetModuleHandleW(None).map_err(|e| e.to_string())?.into();
@@ -229,13 +236,13 @@ fn pick_color() -> std::result::Result<Option<Color>, String> {
             return Err("Failed to register window class".to_string());
         }
 
-        // Create a popup tool window (no taskbar button)
+        // Create a popup tool window centered on cursor (no taskbar button)
         let hwnd = CreateWindowExW(
             WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_LAYERED,
             class_name,
             w!(""),
             WS_POPUP,
-            0, 0,
+            initial_x, initial_y,
             WINDOW_SIZE,
             WINDOW_SIZE,
             None,
