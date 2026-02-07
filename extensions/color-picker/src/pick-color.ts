@@ -11,7 +11,13 @@ export default async function command(props: PickColorCommandLaunchProps) {
   await closeMainWindow();
 
   try {
-    const { pickColor } = await import("swift:../swift/color-picker");
+    let pickColor: () => Promise<Color | undefined>;
+    if (isMac) {
+      const { pickColor: importedPickColor } = await import("swift:../swift/color-picker");
+      pickColor = importedPickColor;
+    } else {
+      // Windows side implementation using rust
+    }
 
     const pickedColor = (await pickColor()) as Color | undefined;
     if (!pickedColor) {

@@ -1,5 +1,6 @@
 import { Action, ActionPanel, getSelectedFinderItems, Grid, Icon, showToast, Toast } from "@raycast/api";
 import { useEffect, useState } from "react";
+import { isMac } from "./lib/utils";
 
 type FinalColor = {
   hex: string;
@@ -43,7 +44,13 @@ export default function Command() {
     }
 
     if (path) {
-      const { extractColor } = await import("swift:../swift/extract-color");
+      let extractColor: (path: string, colorCount: number, dominantOnly: boolean) => Promise<FinalColor[]>;
+      if (isMac) {
+        const { extractColor: importedExtractColor } = await import("swift:../swift/extract-color");
+        extractColor = importedExtractColor;
+      } else {
+        // Windows side implementation using rust
+      }
 
       extractColor(path, 40, false) // Set dominantOnly to true
         .then((colors: FinalColor[]) => {

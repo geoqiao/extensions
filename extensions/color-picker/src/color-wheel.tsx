@@ -4,7 +4,7 @@ import { callbackLaunchCommand, LaunchOptions } from "raycast-cross-extension";
 import { useEffect } from "react";
 import { addToHistory } from "./lib/history";
 import { Color } from "./lib/types";
-import { getFormattedColor } from "./lib/utils";
+import { getFormattedColor, isMac } from "./lib/utils";
 
 export default function Command({
   launchContext = {},
@@ -16,9 +16,14 @@ export default function Command({
 }>) {
   useEffect(() => {
     async function pickAndHandleColor() {
-      const { pickColor } = await import("swift:../swift/color-picker");
-
       try {
+        let pickColor: () => Promise<Color | undefined>;
+        if (isMac) {
+          const { pickColor: importedPickColor } = await import("swift:../swift/color-picker");
+          pickColor = importedPickColor;
+        } else {
+          // Windows side implementation using rust
+        }
         const pickedColor = (await pickColor()) as Color | undefined;
         if (!pickedColor) {
           return;
