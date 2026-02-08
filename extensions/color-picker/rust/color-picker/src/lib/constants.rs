@@ -17,19 +17,19 @@ pub const PREVIEW_BORDER: i32 = 1;
 
 // Timer settings
 pub const TIMER_ID: usize = 1;
-pub const TIMER_INTERVAL_MS: u32 = 16; // ~60 FPS
+pub const TIMER_INTERVAL_MS: u32 = 8; // ~120 FPS
 
 // Alpha values
 pub const ALPHA_OPAQUE: u8 = 255;
 pub const ALPHA_TRANSPARENT: u8 = 1;
 
 // Color constants (ARGB format: 0xAARRGGBB)
-pub const COLOR_BORDER_ARGB: u32 = 0xFF444444;
+pub const COLOR_BORDER_ARGB: u32 = 0xFF47474F;
 pub const COLOR_BLACK_ARGB: u32 = 0xFF000000;
 pub const COLOR_WHITE_ARGB: u32 = 0xFFFFFFFF;
 
 // Color constants (COLORREF format: 0x00BBGGRR)
-pub const COLOR_BORDER_REF: u32 = 0x00444444;
+pub const COLOR_BORDER_REF: u32 = 0x004F4747;
 pub const COLOR_BLACK_REF: u32 = 0x00000000;
 pub const COLOR_WHITE_REF: u32 = 0x00FFFFFF;
 

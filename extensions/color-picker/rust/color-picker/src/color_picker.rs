@@ -68,6 +68,7 @@ unsafe extern "system" fn wnd_proc(hwnd: HWND, msg: u32, wparam: WPARAM, lparam:
                     TOTAL_HEIGHT,
                     SWP_NOACTIVATE | SWP_SHOWWINDOW,
                 );
+                
                 let _ = InvalidateRect(Some(hwnd), None, false);
                 LRESULT(0)
             }
