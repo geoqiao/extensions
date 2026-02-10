@@ -27,7 +27,7 @@ export default function Command({
           pickColor = pickColorSwift;
         } else {
           const { pick_color: pickColorRust } = await import("rust:../rust/color-picker");
-          pickColor = pickColorRust;
+          pickColor = pickColorRust as unknown as typeof pickColor;
         }
         const pickedColor = (await pickColor()) as Color | undefined | null;
         if (!pickedColor) {
