@@ -4,8 +4,10 @@ yarn.lock
 
 # Build outputs
 dist/
-*.js
 *.js.map
+
+# Coverage
+coverage/
 
 # Raycast generated files
 raycast-env.d.ts

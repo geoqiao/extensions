@@ -50,13 +50,34 @@
       "description": "Default timezone for conversion",
       "default": "china",
       "data": [
-        { "title": "China (Beijing/Shanghai)", "value": "china" },
-        { "title": "USA (New York)", "value": "usa_ny" },
-        { "title": "USA (Los Angeles)", "value": "usa_la" },
-        { "title": "Poland (Warsaw)", "value": "poland" },
-        { "title": "Indonesia (Jakarta)", "value": "indonesia" },
-        { "title": "Mexico (Mexico City)", "value": "mexico" },
-        { "title": "Philippines (Manila)", "value": "philippines" }
+        {
+          "title": "China (Beijing/Shanghai)",
+          "value": "china"
+        },
+        {
+          "title": "USA (New York)",
+          "value": "usa_ny"
+        },
+        {
+          "title": "USA (Los Angeles)",
+          "value": "usa_la"
+        },
+        {
+          "title": "Poland (Warsaw)",
+          "value": "poland"
+        },
+        {
+          "title": "Indonesia (Jakarta)",
+          "value": "indonesia"
+        },
+        {
+          "title": "Mexico (Mexico City)",
+          "value": "mexico"
+        },
+        {
+          "title": "Philippines (Manila)",
+          "value": "philippines"
+        }
       ]
     },
     {
@@ -67,7 +88,10 @@
       "description": "Default date display format",
       "default": "standard",
       "data": [
-        { "title": "Standard (yyyy-MM-dd HH:mm:ss)", "value": "standard" }
+        {
+          "title": "Standard (yyyy-MM-dd HH:mm:ss)",
+          "value": "standard"
+        }
       ]
     },
     {
@@ -78,8 +102,14 @@
       "description": "Unit for the Current Timestamp command",
       "default": "seconds",
       "data": [
-        { "title": "Seconds", "value": "seconds" },
-        { "title": "Milliseconds", "value": "milliseconds" }
+        {
+          "title": "Seconds",
+          "value": "seconds"
+        },
+        {
+          "title": "Milliseconds",
+          "value": "milliseconds"
+        }
       ]
     }
   ],
@@ -89,10 +119,13 @@
   },
   "devDependencies": {
     "@raycast/eslint-config": "^2.0.4",
+    "@types/jest": "^30.0.0",
     "@types/node": "~22.17.0",
     "@types/react": "^19.1.9",
     "eslint": "^9.32.0",
+    "jest": "^30.3.0",
     "prettier": "^3.6.2",
+    "ts-jest": "^29.4.9",
     "typescript": "^5.8.2"
   },
   "scripts": {
@@ -100,6 +133,9 @@
     "dev": "ray develop",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "publish": "npx @raycast/api@latest publish"
   }
 }
