@@ -1,0 +1,106 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "unix-timestamp-pro",
+  "title": "Unix Timestamp Pro",
+  "description": "Convert Unix timestamps to readable date formats for major timezones worldwide. Support China, USA, Poland, Indonesia, Mexico, Philippines and more.",
+  "icon": "command-icon.png",
+  "author": "geoqiao",
+  "owner": "geoqiao",
+  "license": "MIT",
+  "categories": [
+    "Data",
+    "Developer Tools"
+  ],
+  "keywords": [
+    "timestamp",
+    "unix",
+    "timezone",
+    "converter",
+    "date",
+    "time"
+  ],
+  "commands": [
+    {
+      "name": "convert-timestamp",
+      "title": "Convert Timestamp to Date",
+      "subtitle": "Unix Timestamp Pro",
+      "description": "Convert Unix timestamps to human-readable date formats for any timezone",
+      "mode": "view"
+    },
+    {
+      "name": "generate-timestamp",
+      "title": "Generate Timestamp from Date",
+      "subtitle": "Unix Timestamp Pro",
+      "description": "Create Unix timestamps from human-readable dates and times in selected timezone",
+      "mode": "view"
+    },
+    {
+      "name": "current-timestamp",
+      "title": "Get Current Timestamp",
+      "subtitle": "Unix Timestamp Pro",
+      "description": "Copy current Unix timestamp to clipboard",
+      "mode": "no-view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "defaultTimezone",
+      "type": "dropdown",
+      "required": false,
+      "title": "Default Timezone",
+      "description": "Default timezone for conversion",
+      "default": "china",
+      "data": [
+        { "title": "China (Beijing/Shanghai)", "value": "china" },
+        { "title": "USA (New York)", "value": "usa_ny" },
+        { "title": "USA (Los Angeles)", "value": "usa_la" },
+        { "title": "Poland (Warsaw)", "value": "poland" },
+        { "title": "Indonesia (Jakarta)", "value": "indonesia" },
+        { "title": "Mexico (Mexico City)", "value": "mexico" },
+        { "title": "Philippines (Manila)", "value": "philippines" }
+      ]
+    },
+    {
+      "name": "defaultFormat",
+      "type": "dropdown",
+      "required": false,
+      "title": "Default Format",
+      "description": "Default date display format",
+      "default": "standard",
+      "data": [
+        { "title": "Standard (yyyy-MM-dd HH:mm:ss)", "value": "standard" }
+      ]
+    },
+    {
+      "name": "timestampUnit",
+      "type": "dropdown",
+      "required": false,
+      "title": "Timestamp Unit",
+      "description": "Unit for the Current Timestamp command",
+      "default": "seconds",
+      "data": [
+        { "title": "Seconds", "value": "seconds" },
+        { "title": "Milliseconds", "value": "milliseconds" }
+      ]
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.102.3",
+    "@raycast/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@types/node": "~22.17.0",
+    "@types/react": "^19.1.9",
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
