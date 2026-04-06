@@ -57,6 +57,16 @@ describe("datetime utils", () => {
       expect(result.getTime()).toBe(1704067200000);
     });
 
+    it("should handle negative seconds timestamp", () => {
+      const result = getDateFromUnixTime(-100000000000);
+      expect(result.getTime()).toBe(-100000000000 * 1000);
+    });
+
+    it("should handle negative milliseconds timestamp", () => {
+      const result = getDateFromUnixTime(-1000000000000);
+      expect(result.getTime()).toBe(-1000000000000);
+    });
+
     it("should handle current timestamp", () => {
       const now = Math.floor(Date.now() / 1000);
       const result = getDateFromUnixTime(now);
@@ -108,6 +118,29 @@ describe("datetime utils", () => {
       // China is UTC+8, so 12:00 in China is 04:00 in UTC
       // Therefore chinaResult should be less than utcResult (earlier in time)
       expect(chinaResult).not.toBe(utcResult);
+    });
+
+    it("should return correct Unix timestamp for UTC", () => {
+      const result = getUnixTimeFromLocalDate(2024, 1, 1, 0, 0, 0, utc);
+      expect(result).toBe(1704067200);
+    });
+
+    it("should return correct Unix timestamp for China", () => {
+      // 2024-01-01 00:00:00 in China (UTC+8) = 2023-12-31 16:00:00 UTC
+      const result = getUnixTimeFromLocalDate(2024, 1, 1, 0, 0, 0, china);
+      expect(result).toBe(1704038400);
+    });
+
+    it("should return correct Unix timestamp for New York in standard time", () => {
+      // 2024-01-01 00:00:00 in NY (EST, UTC-5) = 2024-01-01 05:00:00 UTC
+      const result = getUnixTimeFromLocalDate(2024, 1, 1, 0, 0, 0, usaNy);
+      expect(result).toBe(1704085200);
+    });
+
+    it("should return correct Unix timestamp for New York in daylight time", () => {
+      // 2024-06-15 12:00:00 in NY (EDT, UTC-4) = 2024-06-15 16:00:00 UTC
+      const result = getUnixTimeFromLocalDate(2024, 6, 15, 12, 0, 0, usaNy);
+      expect(result).toBe(1718467200);
     });
   });
 

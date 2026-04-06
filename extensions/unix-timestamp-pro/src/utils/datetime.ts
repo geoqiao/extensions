@@ -1,5 +1,4 @@
 import { Country } from "../types";
-import { pad2 } from "./pad";
 
 /**
  * Format date with specified locale and options, displaying in target timezone
@@ -133,7 +132,7 @@ export const formatRFC2822 = (
  */
 export const getDateFromUnixTime = (unixTime: number | string): Date => {
   const num = typeof unixTime === "string" ? Number(unixTime) : unixTime;
-  const strLen = num.toString().length;
+  const strLen = Math.abs(num).toString().length;
 
   // 13+ digits = milliseconds, convert to seconds
   if (strLen >= 13) {
@@ -162,15 +161,6 @@ export const getUnixTimeFromLocalDate = (
   second: number,
   country: Country,
 ): number => {
-  // Create a date string in the target timezone
-  const dateStr = `${year}-${pad2(month)}-${pad2(day)}T${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
-
-  // Create date object - we need to handle timezone conversion
-  // First, create a date assuming the input is in local time
-  const localDate = new Date(dateStr);
-
-  // Get the UTC time for this date in the target timezone
-  // We'll use Intl.DateTimeFormat to get the components in the target timezone
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: country.ianaTimeZone,
     year: "numeric",
@@ -182,28 +172,40 @@ export const getUnixTimeFromLocalDate = (
     hour12: false,
   });
 
-  const parts = formatter.formatToParts(localDate);
-  const getPart = (type: string) =>
-    parseInt(parts.find((p) => p.type === type)?.value || "0", 10);
+  const getParts = (d: Date) => {
+    const parts = formatter.formatToParts(d);
+    const getPart = (type: string) =>
+      parseInt(parts.find((p) => p.type === type)?.value || "0", 10);
+    return {
+      year: getPart("year"),
+      month: getPart("month"),
+      day: getPart("day"),
+      hour: getPart("hour"),
+      minute: getPart("minute"),
+      second: getPart("second"),
+    };
+  };
 
-  const tzYear = getPart("year");
-  const tzMonth = getPart("month");
-  const tzDay = getPart("day");
-  const tzHour = getPart("hour");
-  const tzMinute = getPart("minute");
-  const tzSecond = getPart("second");
+  // Start with candidate assuming the input is UTC, then iteratively adjust
+  let candidate = Date.UTC(year, month - 1, day, hour, minute, second);
+  const targetMs = candidate;
 
-  // Create UTC date from these components
-  const utcDate = Date.UTC(
-    tzYear,
-    tzMonth - 1,
-    tzDay,
-    tzHour,
-    tzMinute,
-    tzSecond,
-  );
+  for (let i = 0; i < 3; i++) {
+    const parts = getParts(new Date(candidate));
+    const partsMs = Date.UTC(
+      parts.year,
+      parts.month - 1,
+      parts.day,
+      parts.hour,
+      parts.minute,
+      parts.second,
+    );
+    const diff = targetMs - partsMs;
+    if (diff === 0) break;
+    candidate += diff;
+  }
 
-  return Math.floor(utcDate / 1000);
+  return Math.floor(candidate / 1000);
 };
 
 /**
